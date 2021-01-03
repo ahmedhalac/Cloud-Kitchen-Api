@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const db = require("./models");
 
 const app = express();
 
@@ -20,6 +21,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Cloud Kitchen app." });
 });
+
+//routes
+require("./routes/authRoutes")(app);
+require("./routes/userRoutes")(app);
 
 // set port, listen for requests
 const port = process.env.PORT || 3000;
