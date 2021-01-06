@@ -1,4 +1,4 @@
-/*require("dotenv").config();
+require("dotenv").config();
 const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_PW, POSTGRES_DB } = process.env;
 
 module.exports = {
@@ -24,4 +24,3 @@ module.exports = {
     dialect: "postgres",
   },
 };
-*/

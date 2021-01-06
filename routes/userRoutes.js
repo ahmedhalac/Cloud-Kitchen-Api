@@ -11,26 +11,25 @@ module.exports = function (app) {
   });
 
   app.get(
-    "/api/admin",
-    authJwt.verifyToken,
-    authJwt.isAdmin,
+    "/admin",
+    [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
 
   app.get(
-    "/api/customer",
+    "/customer",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.customerBoard
   );
 
   app.get(
-    "/api/restaurant_admin",
+    "/restaurant_admin",
     [authJwt.verifyToken, authJwt.isRestaurantAdmin],
     controller.restaurantAdminBoard
   );
 
   app.get(
-    "/api/deliverer",
+    "/deliverer",
     [authJwt.verifyToken, authJwt.isDeliverer],
     controller.delivererBoard
   );
