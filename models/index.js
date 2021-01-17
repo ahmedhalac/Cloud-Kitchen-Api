@@ -20,6 +20,8 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User = require("../models/User.js")(sequelize, DataTypes);
+db.Restaurant = require("../models/Restaurant")(sequelize, DataTypes);
+db.RestaurantType = require("../models/RestaurantType")(sequelize, DataTypes);
 
 db.ROLES = ["admin", "restaurant_admin", "customer", "deliverer"];
 

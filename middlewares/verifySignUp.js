@@ -9,7 +9,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
   }).then((user) => {
     if (user) {
       res.status(400).send({
-        message: "Failed! Email is already in use!",
+        message: "Greška! Email je već u upotrebi!",
       });
       return;
     }
@@ -21,7 +21,7 @@ checkRolesExisted = (req, res, next) => {
   if (req.body.roles) {
     if (!ROLES.includes(req.body.roles)) {
       res.status(400).send({
-        message: "Failed! Role does not exist = " + req.body.roles,
+        message: "Greška! Rola ne postoji = " + req.body.roles,
       });
       return;
     }
