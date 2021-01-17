@@ -1,4 +1,4 @@
-const { User, db } = require("../models");
+const { User, Restaurant, RestaurantType } = require("../models");
 const config = require("../config/authConfig");
 
 var jwt = require("jsonwebtoken");
@@ -15,7 +15,7 @@ exports.signup = (req, res) => {
     roles: req.body.roles,
   })
     .then((user) => {
-      res.send({ message: "User was registered successfully!" });
+      res.send({ message: "Korisnik je uspješno registrovan!" });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -30,7 +30,7 @@ exports.signin = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "Korisnik nije pronađen." });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -41,7 +41,7 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!",
+          message: "Pogrešna lozinka!",
         });
       }
 
@@ -55,6 +55,22 @@ exports.signin = (req, res) => {
         roles: user.roles,
         accessToken: token,
       });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.addRestaurant = (req, res) => {
+  Restaurant.create({
+    name: req.body.name,
+    address: req.body.address,
+    city: req.body.city,
+    typeId: req.body.typeId,
+    stars: req.body.stars,
+  })
+    .then((restaurant) => {
+      res.send({ message: "Restoran je dodan uspješno!" });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
