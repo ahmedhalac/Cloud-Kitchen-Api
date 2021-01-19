@@ -22,4 +22,10 @@ module.exports = function (app) {
   app.post("/api/signin", controller.signin);
 
   app.post("/api/add-restaurant", controller.addRestaurant);
+
+  app.get("/api/get-restaurants", controller.getRestaurants);
+
+  app.get("/api/get-restaurant-types", controller.getRestaurantTypes);
+
+  app.put("/api/edit-restaurant/:restId", controller.editRestaurant);
 };

@@ -76,3 +76,50 @@ exports.addRestaurant = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.getRestaurantTypes = (req, res) => {
+  RestaurantType.findAll({
+    attributes: ["id", "name"],
+  })
+    .then((restaurantTypes) => {
+      res.send(restaurantTypes);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.getRestaurants = (req, res) => {
+  Restaurant.findAll({
+    attributes: ["name", "address", "city", "stars", "typeId"],
+  })
+    .then((restaurants) => {
+      res.send(restaurants);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.editRestaurant = (req, res) => {
+  const { restId } = req.params;
+  Restaurant.update(
+    {
+      name: req.body.name,
+      address: req.body.address,
+      city: req.body.city,
+      stars: req.body.stars,
+      typeId: req.body.typeId,
+    },
+    {
+      returning: true,
+      where: { id: restId },
+    }
+  )
+    .then(([rowsUpdate, [updatedRestaurant]]) => {
+      res.send(updatedRestaurant);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
