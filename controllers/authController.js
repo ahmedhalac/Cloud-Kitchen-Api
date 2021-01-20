@@ -91,7 +91,8 @@ exports.getRestaurantTypes = (req, res) => {
 
 exports.getRestaurants = (req, res) => {
   Restaurant.findAll({
-    attributes: ["name", "address", "city", "stars", "typeId"],
+    attributes: ["id", "name", "address", "city", "stars", "typeId"],
+    order: [["id", "ASC"]],
   })
     .then((restaurants) => {
       res.send(restaurants);
@@ -102,7 +103,6 @@ exports.getRestaurants = (req, res) => {
 };
 
 exports.editRestaurant = (req, res) => {
-  const { restId } = req.params;
   Restaurant.update(
     {
       name: req.body.name,
@@ -112,12 +112,13 @@ exports.editRestaurant = (req, res) => {
       typeId: req.body.typeId,
     },
     {
+      where: { id: req.params.restId },
+      order: [["id", "ASC"]],
       returning: true,
-      where: { id: restId },
     }
   )
-    .then(([rowsUpdate, [updatedRestaurant]]) => {
-      res.send(updatedRestaurant);
+    .then((user) => {
+      res.send({ message: "Podaci restorana su promijenjeni!" });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
