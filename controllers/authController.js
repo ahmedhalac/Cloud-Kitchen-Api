@@ -1,9 +1,16 @@
-const { User, Restaurant, RestaurantType } = require("../models");
+const {
+  User,
+  Restaurant,
+  RestaurantType,
+  Food,
+  FoodType,
+} = require("../models");
 const config = require("../config/authConfig");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+//REGISTRATION
 exports.signup = (req, res) => {
   //Save user in DB
   User.create({
@@ -22,6 +29,7 @@ exports.signup = (req, res) => {
     });
 };
 
+//LOGIN
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -61,6 +69,7 @@ exports.signin = (req, res) => {
     });
 };
 
+//ADD restaurants to database
 exports.addRestaurant = (req, res) => {
   Restaurant.create({
     name: req.body.name,
@@ -77,18 +86,20 @@ exports.addRestaurant = (req, res) => {
     });
 };
 
-exports.getRestaurantTypes = (req, res) => {
-  RestaurantType.findAll({
-    attributes: ["id", "name"],
+//Add Restaurant Type to DB
+exports.addRestaurnatType = (req, res) => {
+  RestaurantType.create({
+    name: req.body.name,
   })
-    .then((restaurantTypes) => {
-      res.send(restaurantTypes);
+    .then((restaurantType) => {
+      res.send({ message: "Tip resotorana je dodan!" });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
 };
 
+//Get all Restaurants from DB
 exports.getRestaurants = (req, res) => {
   Restaurant.findAll({
     attributes: ["id", "name", "address", "city", "stars", "typeId"],
@@ -102,6 +113,22 @@ exports.getRestaurants = (req, res) => {
     });
 };
 
+//GET all Restaurant Types from DB
+exports.getRestaurantTypes = (req, res) => {
+  RestaurantType.findAll({
+    attributes: ["id", "name"],
+  })
+    .then((restaurantTypes) => {
+      res.send(restaurantTypes);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//GET Food Type
+
+//Edit Restaurant
 exports.editRestaurant = (req, res) => {
   Restaurant.update(
     {
@@ -119,6 +146,69 @@ exports.editRestaurant = (req, res) => {
   )
     .then((user) => {
       res.send({ message: "Podaci restorana su promijenjeni!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//Edit Restaurant Type
+exports.editRestaurantType = (req, res) => {
+  const { id } = req.params;
+  RestaurantType.update(
+    {
+      name: req.body.name,
+    },
+    {
+      where: { id: id },
+      order: [["id", "ASC"]],
+      returning: true,
+    }
+  )
+    .then((user) => {
+      res.send({ message: "Ime tipa restorana je promijenjeno!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//Add Food to DB
+exports.addFood = (req, res) => {
+  Food.create({
+    name: req.body.name,
+    price: req.body.price,
+    ingredients: req.body.ingredients,
+    typeId: req.body.typeId,
+  })
+    .then((food) => {
+      res.send({ message: "Hrana je dodana uspješno." });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//Add Food Type to DB
+exports.addFoodType = (req, res) => {
+  FoodType.create({
+    name: req.body.name,
+  })
+    .then((foodType) => {
+      res.send({ message: "Tip hrane je dodan." });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//GET Food Type from DB
+exports.getFoodType = (req, res) => {
+  FoodType.findAll({
+    attributes: ["id", "name"],
+  })
+    .then((foodType) => {
+      res.send(foodType);
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
