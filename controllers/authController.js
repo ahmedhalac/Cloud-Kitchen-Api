@@ -117,6 +117,7 @@ exports.getRestaurants = (req, res) => {
 exports.getRestaurantTypes = (req, res) => {
   RestaurantType.findAll({
     attributes: ["id", "name"],
+    order: [["id", "ASC"]],
   })
     .then((restaurantTypes) => {
       res.send(restaurantTypes);
@@ -125,8 +126,6 @@ exports.getRestaurantTypes = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
-
-//GET Food Type
 
 //Edit Restaurant
 exports.editRestaurant = (req, res) => {
@@ -154,18 +153,17 @@ exports.editRestaurant = (req, res) => {
 
 //Edit Restaurant Type
 exports.editRestaurantType = (req, res) => {
-  const { id } = req.params;
   RestaurantType.update(
     {
       name: req.body.name,
     },
     {
-      where: { id: id },
+      where: { id: req.params.restTypeId },
       order: [["id", "ASC"]],
       returning: true,
     }
   )
-    .then((user) => {
+    .then((resType) => {
       res.send({ message: "Ime tipa restorana je promijenjeno!" });
     })
     .catch((err) => {
@@ -206,9 +204,54 @@ exports.addFoodType = (req, res) => {
 exports.getFoodType = (req, res) => {
   FoodType.findAll({
     attributes: ["id", "name"],
+    order: [["id", "ASC"]],
   })
     .then((foodType) => {
       res.send(foodType);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.editFoodType = (req, res) => {
+  FoodType.update(
+    {
+      name: req.body.name,
+    },
+    {
+      where: { id: req.params.foodTypeId },
+      order: [["id", "ASC"]],
+      returning: true,
+    }
+  )
+    .then((resType) => {
+      res.send({ message: "Ime tipa hrane je promijenjeno!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//DELETE Retstaurant Type
+exports.deleteRestType = (req, res) => {
+  RestaurantType.destroy({
+    where: { id: req.params.restTypeId },
+  })
+    .then((resType) => {
+      res.send({ message: "Tip restorana je obrisan!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.deleteFoodType = (req, res) => {
+  FoodType.destroy({
+    where: { id: req.params.foodTypeId },
+  })
+    .then((foodType) => {
+      res.send({ message: "Tip hrane je obrisan!" });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });

@@ -38,5 +38,18 @@ module.exports = function (app) {
   //PUT
   app.put("/api/edit-restaurant/:restId", controller.editRestaurant);
 
-  app.put("/api/edit-restaurant-type/:id", controller.editRestaurantType);
+  app.put(
+    "/api/edit-restaurant-type/:restTypeId",
+    controller.editRestaurantType
+  );
+
+  app.put("/api/edit-food-type/:foodTypeId", controller.editFoodType);
+
+  //DELETE
+  app.delete(
+    "/api/delete-restaurant-type/:restTypeId",
+    controller.deleteRestType
+  );
+
+  app.delete("/api/delete-food-type/:foodTypeId", controller.deleteFoodType);
 };
