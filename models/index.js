@@ -22,8 +22,8 @@ db.Sequelize = Sequelize;
 db.User = require("../models/User.js")(sequelize, DataTypes);
 db.Restaurant = require("../models/Restaurant")(sequelize, DataTypes);
 db.RestaurantType = require("../models/RestaurantType")(sequelize, DataTypes);
-db.Food = require("../models/Food")(sequelize, DataTypes);
-db.FoodType = require("../models/FoodTypes")(sequelize, DataTypes);
+db.FoodType = require("../models/FoodType")(sequelize, DataTypes);
+db.Foods = require("../models/Food")(sequelize, DataTypes);
 
 db.ROLES = ["admin", "restaurant_admin", "customer", "deliverer"];
 

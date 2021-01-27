@@ -28,12 +28,16 @@ module.exports = function (app) {
 
   app.post("/api/add-food-type", controller.addFoodType);
 
+  app.post("/api/add-food", controller.addFood);
+
   //GET
   app.get("/api/get-restaurants", controller.getRestaurants);
 
   app.get("/api/get-restaurant-types", controller.getRestaurantTypes);
 
   app.get("/api/get-food-type", controller.getFoodType);
+
+  app.get("/api/get-food", controller.getFood);
 
   //PUT
   app.put("/api/edit-restaurant/:restId", controller.editRestaurant);

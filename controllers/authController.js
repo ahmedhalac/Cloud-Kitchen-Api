@@ -2,7 +2,7 @@ const {
   User,
   Restaurant,
   RestaurantType,
-  Food,
+  Foods,
   FoodType,
 } = require("../models");
 const config = require("../config/authConfig");
@@ -173,14 +173,30 @@ exports.editRestaurantType = (req, res) => {
 
 //Add Food to DB
 exports.addFood = (req, res) => {
-  Food.create({
+  Foods.create({
     name: req.body.name,
     price: req.body.price,
     ingredients: req.body.ingredients,
     typeId: req.body.typeId,
+    image: req.body.image,
+    discount_end_time: req.body.discount_end_time,
+    discount_price: req.body.discount_price,
   })
     .then((food) => {
-      res.send({ message: "Hrana je dodana uspješno." });
+      res.send({ message: "Hrana je dodana uspješno!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//GET Food from DB
+exports.getFood = (req, res) => {
+  Foods.findAll({
+    order: [["id", "ASC"]],
+  })
+    .then((food) => {
+      res.send(food);
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
