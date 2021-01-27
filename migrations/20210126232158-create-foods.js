@@ -7,6 +7,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        field: "id",
       },
       name: {
         type: Sequelize.STRING(100),
@@ -16,9 +17,6 @@ module.exports = {
       price: {
         type: Sequelize.DECIMAL(10, 2),
         field: "price",
-        validate: {
-          isDecimal: true,
-        },
         allowNull: true,
       },
       ingredients: {
@@ -35,6 +33,21 @@ module.exports = {
           key: "id",
           onDelete: "CASCADE",
         },
+      },
+      image: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+        field: "image",
+      },
+      discount_end_time: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        field: "discount_end_time",
+      },
+      discount_price: {
+        type: Sequelize.DECIMAL(10, 2),
+        field: "discount_price",
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

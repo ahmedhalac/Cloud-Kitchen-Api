@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   FoodType.associate = (models) => {
-    const { Food } = models;
-    FoodType.hasMany(Food, {
+    const { Foods } = models;
+    FoodType.hasMany(Foods, {
       foreignKey: "typeId",
-      as: "Food",
+      as: "Foods",
     });
   };
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Food = sequelize.define("Food", {
+  const Foods = sequelize.define("Foods", {
     id: {
       type: DataTypes.BIGINT,
       field: "id",
@@ -15,9 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.DECIMAL(10, 2),
       field: "price",
-      validate: {
-        isDecimal: true,
-      },
       allowNull: true,
     },
     ingredients: {
@@ -30,15 +27,30 @@ module.exports = (sequelize, DataTypes) => {
       field: "typeId",
       allowNull: false,
     },
+    image: {
+      type: DataTypes.TEXT,
+      field: "image",
+      allowNull: true,
+    },
+    discount_end_time: {
+      type: DataTypes.DATE,
+      field: "discount_end_time",
+      allowNull: true,
+    },
+    discount_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      field: "discount_price",
+      allowNull: true,
+    },
   });
 
-  Food.associate = (models) => {
+  Foods.associate = (models) => {
     const { FoodType } = models;
-    Food.belongsTo(FoodType, {
+    Foods.belongsTo(FoodType, {
       foreignKey: "typeId",
-      as: "FoodType",
+      as: "FoodTypes",
     });
   };
 
-  return Food;
+  return Foods;
 };
