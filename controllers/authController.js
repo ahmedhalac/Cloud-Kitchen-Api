@@ -4,11 +4,29 @@ const {
   RestaurantType,
   Foods,
   FoodType,
+  MenuName,
+  GroupMenu,
 } = require("../models");
 const config = require("../config/authConfig");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+
+//connection with db
+var pg = require("pg");
+require("dotenv").config();
+const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_DB, POSTGRES_PW } = process.env;
+var configDB = {
+  user: POSTGRES_USER,
+  database: POSTGRES_DB,
+  password: POSTGRES_PW,
+  host: POSTGRES_HOST,
+  port: 5432,
+  max: 100,
+  idleTimeoutMills: 30000,
+};
+
+var pool = new pg.Pool(configDB);
 
 //REGISTRATION
 exports.signup = (req, res) => {
@@ -57,6 +75,9 @@ exports.signin = (req, res) => {
         expiresIn: 86400, //24 hours
       });
 
+      //DODATII
+      //res.cookie("auth", token);
+
       res.status(200).send({
         id: user.id,
         email: user.email,
@@ -102,7 +123,15 @@ exports.addRestaurnatType = (req, res) => {
 //Get all Restaurants from DB
 exports.getRestaurants = (req, res) => {
   Restaurant.findAll({
-    attributes: ["id", "name", "address", "city", "stars", "typeId"],
+    attributes: [
+      "id",
+      "name",
+      "address",
+      "city",
+      "stars",
+      "typeId",
+      "deliver_distance",
+    ],
     order: [["id", "ASC"]],
   })
     .then((restaurants) => {
@@ -136,6 +165,7 @@ exports.editRestaurant = (req, res) => {
       city: req.body.city,
       stars: req.body.stars,
       typeId: req.body.typeId,
+      deliver_distance: req.body.deliver_distance,
     },
     {
       where: { id: req.params.restId },
@@ -268,6 +298,74 @@ exports.deleteFoodType = (req, res) => {
   })
     .then((foodType) => {
       res.send({ message: "Tip hrane je obrisan!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//ADD menu name
+exports.addMenuName = (req, res) => {
+  MenuName.create({
+    menu_name: req.body.menu_name,
+  })
+    .then((menu_name) => {
+      res.send({ message: "Ime menija dodano!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//GET Nenu name
+exports.getMenuName = (req, res) => {
+  MenuName.findAll({
+    attributes: ["id", "menu_name"],
+    order: [["id", "ASC"]],
+  })
+    .then((menu_name) => {
+      res.send(menu_name);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+//ADD group menu
+exports.addGroupMenu = (req, res) => {
+  GroupMenu.create({
+    restaurantId: req.body.restaurantId,
+    menuNameId: req.body.menuNameId,
+    foodId: req.body.foodId,
+  })
+    .then((group_menu) => {
+      res.send({ message: "Grupni meni dodan!" });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.getGroupMenus = (req, res) => {
+  pool
+    .query(
+      `SELECT R.name AS res_name, MN.menu_name, F.name as food_name FROM "GroupMenus" G
+      INNER JOIN "Restaurants" R ON R.id = G."restaurantId"
+      INNER JOIN "MenuNames" MN ON MN.id = G."menuNameId"
+      INNER JOIN "Foods" F ON F.id = G."foodId"
+      WHERE "restaurantId" IN (
+        SELECT "restaurantId" FROM "GroupMenus"
+        GROUP BY "restaurantId"
+        HAVING COUNT(id) > 1)
+      AND "menuNameId" IN (
+        SELECT "menuNameId" FROM "GroupMenus"
+        GROUP BY "menuNameId"
+        HAVING COUNT(id) > 1
+        );
+    `
+    )
+    .then((group_menus) => {
+      res.send(group_menus.rows);
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });

@@ -45,10 +45,14 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Foods.associate = (models) => {
-    const { FoodType } = models;
+    const { FoodType, GroupMenu } = models;
     Foods.belongsTo(FoodType, {
       foreignKey: "typeId",
       as: "FoodTypes",
+    });
+    Foods.hasMany(GroupMenu, {
+      foreignKey: "foodId",
+      as: "GroupMenu",
     });
   };
 
