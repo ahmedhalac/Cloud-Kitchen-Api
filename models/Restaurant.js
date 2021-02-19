@@ -31,13 +31,23 @@ module.exports = (sequelize, DataTypes) => {
       field: "typeId",
       allowNull: false,
     },
+    deliver_distance: {
+      type: DataTypes.STRING,
+      field: "deliver_distance",
+      defaultValue: "1",
+      allowNull: true,
+    },
   });
 
   Restaurant.associate = (models) => {
-    const { RestaurantType } = models;
+    const { RestaurantType, GroupMenu } = models;
     Restaurant.belongsTo(RestaurantType, {
       foreignKey: "typeId",
       as: "restaurant_type",
+    });
+    Restaurant.hasMany(GroupMenu, {
+      foreignKey: "restaurantId",
+      as: "GroupMenu",
     });
   };
 

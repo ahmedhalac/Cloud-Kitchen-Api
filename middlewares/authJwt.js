@@ -3,10 +3,12 @@ const jwt = require("jsonwebtoken");
 const { ROLES, User } = require("../models");
 
 verifyToken = (req, res, next) => {
+  //DODATI
+  //let token = req.cookies.auth;
   let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(403).send({
-      mesage: "No token provided!",
+      message: "No token provided!",
     });
   }
 

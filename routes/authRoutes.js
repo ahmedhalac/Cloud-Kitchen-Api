@@ -30,6 +30,10 @@ module.exports = function (app) {
 
   app.post("/api/add-food", controller.addFood);
 
+  app.post("/api/add-menu-name", controller.addMenuName);
+
+  app.post("/api/add-group-menu", controller.addGroupMenu);
+
   //GET
   app.get("/api/get-restaurants", controller.getRestaurants);
 
@@ -38,6 +42,10 @@ module.exports = function (app) {
   app.get("/api/get-food-type", controller.getFoodType);
 
   app.get("/api/get-food", controller.getFood);
+
+  app.get("/api/get-menu-name", controller.getMenuName);
+
+  app.get("/api/get-group-menus", controller.getGroupMenus);
 
   //PUT
   app.put("/api/edit-restaurant/:restId", controller.editRestaurant);
