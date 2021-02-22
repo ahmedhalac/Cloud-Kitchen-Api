@@ -34,6 +34,10 @@ module.exports = function (app) {
 
   app.post("/api/add-group-menu", controller.addGroupMenu);
 
+  app.post("/api/add-order", controller.addOrder);
+
+  app.post("/api/add-order-details", controller.addOrderDetails);
+
   //GET
   app.get("/api/get-restaurants", controller.getRestaurants);
 
@@ -46,6 +50,10 @@ module.exports = function (app) {
   app.get("/api/get-menu-name", controller.getMenuName);
 
   app.get("/api/get-group-menus", controller.getGroupMenus);
+
+  app.get("/api/get-order-data", controller.getOrderData);
+
+  app.get("/api/get-orders", controller.getOrders);
 
   //PUT
   app.put("/api/edit-restaurant/:restId", controller.editRestaurant);
@@ -64,4 +72,6 @@ module.exports = function (app) {
   );
 
   app.delete("/api/delete-food-type/:foodTypeId", controller.deleteFoodType);
+
+  app.delete("/api/delete-order/:orderId", controller.deleteOrder);
 };
