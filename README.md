@@ -1,1 +1,1 @@
-Projekat treba pokrenuti komandom "npm run dev".
+Project must start with command "npm run dev".
