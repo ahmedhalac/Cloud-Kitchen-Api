@@ -5,32 +5,31 @@ module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
-      "x-access-token. Origin, Content-Type, Accept"
+      "x-access-token, Origin, Content-Type, Accept"
     );
     next();
   });
 
   app.get(
-    "/api/admin",
-    authJwt.verifyToken,
-    authJwt.isAdmin,
+    "/admin",
+    [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
 
   app.get(
-    "/api/customer",
+    "/customer",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.customerBoard
   );
 
   app.get(
-    "/api/restaurant_admin",
+    "/restaurant_admin",
     [authJwt.verifyToken, authJwt.isRestaurantAdmin],
     controller.restaurantAdminBoard
   );
 
   app.get(
-    "/api/deliverer",
+    "/deliverer",
     [authJwt.verifyToken, authJwt.isDeliverer],
     controller.delivererBoard
   );

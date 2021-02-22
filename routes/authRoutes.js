@@ -19,5 +19,59 @@ module.exports = function (app) {
     controller.signup
   );
 
+  //POST
   app.post("/api/signin", controller.signin);
+
+  app.post("/api/add-restaurant", controller.addRestaurant);
+
+  app.post("/api/add-restaurant-type", controller.addRestaurnatType);
+
+  app.post("/api/add-food-type", controller.addFoodType);
+
+  app.post("/api/add-food", controller.addFood);
+
+  app.post("/api/add-menu-name", controller.addMenuName);
+
+  app.post("/api/add-group-menu", controller.addGroupMenu);
+
+  app.post("/api/add-order", controller.addOrder);
+
+  app.post("/api/add-order-details", controller.addOrderDetails);
+
+  //GET
+  app.get("/api/get-restaurants", controller.getRestaurants);
+
+  app.get("/api/get-restaurant-types", controller.getRestaurantTypes);
+
+  app.get("/api/get-food-type", controller.getFoodType);
+
+  app.get("/api/get-food", controller.getFood);
+
+  app.get("/api/get-menu-name", controller.getMenuName);
+
+  app.get("/api/get-group-menus", controller.getGroupMenus);
+
+  app.get("/api/get-order-data", controller.getOrderData);
+
+  app.get("/api/get-orders", controller.getOrders);
+
+  //PUT
+  app.put("/api/edit-restaurant/:restId", controller.editRestaurant);
+
+  app.put(
+    "/api/edit-restaurant-type/:restTypeId",
+    controller.editRestaurantType
+  );
+
+  app.put("/api/edit-food-type/:foodTypeId", controller.editFoodType);
+
+  //DELETE
+  app.delete(
+    "/api/delete-restaurant-type/:restTypeId",
+    controller.deleteRestType
+  );
+
+  app.delete("/api/delete-food-type/:foodTypeId", controller.deleteFoodType);
+
+  app.delete("/api/delete-order/:orderId", controller.deleteOrder);
 };

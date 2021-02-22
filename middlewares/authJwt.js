@@ -1,12 +1,12 @@
 const config = require("../config/authConfig.js");
 const jwt = require("jsonwebtoken");
-const { ROLES, User, db } = require("../models");
+const { ROLES, User } = require("../models");
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(403).send({
-      mesage: "No token provided!",
+      message: "No token provided!",
     });
   }
 
@@ -26,13 +26,12 @@ isAdmin = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
     if (ROLES.some((role) => role === user.roles)) {
       if (user.roles === ROLES[0]) {
-        return next();
+        next();
       }
-    } else {
-      res.status(403).send({
-        message: "Require Admin Role!",
-      });
     }
+    res.status(403).send({
+      message: "Require Admin Role!",
+    });
   });
 };
 
@@ -42,11 +41,10 @@ isRestaurantAdmin = (req, res, next) => {
       if (user.roles === ROLES[1]) {
         return next();
       }
-    } else {
-      res.status(403).send({
-        message: "Require Restaurant-Admin Role!",
-      });
     }
+    res.status(403).send({
+      message: "Require Restaurant-Admin Role!",
+    });
   });
 };
 
@@ -56,11 +54,10 @@ isCustomer = (req, res, next) => {
       if (user.roles === ROLES[2]) {
         return next();
       }
-    } else {
-      res.status(403).send({
-        message: "Require Customer Role!",
-      });
     }
+    res.status(403).send({
+      message: "Require Customer Role!",
+    });
   });
 };
 
@@ -68,13 +65,12 @@ isDeliverer = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
     if (ROLES.some((role) => role === user.roles)) {
       if (user.roles === ROLES[3]) {
-        return next();
+        next();
       }
-    } else {
-      res.status(403).send({
-        message: "Require Deliverer Role!",
-      });
     }
+    res.status(403).send({
+      message: "Require Deliverer Role!",
+    });
   });
 };
 
